@@ -25,13 +25,9 @@ class Postgres:
       cur = con.cursor()
       cur.execute(f"SELECT id,latitude,longitude,power  from gps where req_id in (select req_id from gps order by req_id desc Limit 4) and id={id_phone}")
       rows = cur.fetchall()
-      for i in rows:
-        a=[]
-        a.append(i[1])
-        a.append(i[2])
-        a.append(i[3])
-        b={i[0]:a}
-      return b
+    return {rows[0][0]:[rows[0][1],rows[0][2]]}
+
+
   def getMac(self,id_phone): # { id:mac }
     with DataConn() as con:
       cur = con.cursor()
@@ -39,43 +35,36 @@ class Postgres:
       rows=cur.fetchall()
       a=rows[0]
     return {a[0]:a[1]}
+
+
   def getAccelerometr(self,id):  # {id:[x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,x,y,z from accelerometr where req_id in (select max(id_req) from req)")
       rows=cur.fetchall()
-      for i in rows:
-        a = []
-        a.append(i[1])
-        a.append(i[2])
-        a.append(i[3])
-        b = {i[0]: a}
-    return b
+    return {rows[0][0]:[rows[0][1],rows[0][2]]}
+
+
   def getGyroscop(self,id): # {id : [x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,x,y,z from gyroscop where req_id in (select max(id_req) from req)")
       rows=cur.fetchall()
-      for i in rows:
-        a = []
-        a.append(i[1])
-        a.append(i[2])
-        a.append(i[3])
-        b = {i[0]: a}
-    return b
+    return {rows[0][0]: [rows[0][1], rows[0][2]]}
+
+
   def getMeta (self,id): # {id:power}
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id, volt from Meta where req_id in (select max(id_req) from req)")
       rows=cur.fetchall()
     return {rows[0][0]:rows[0][1]}
+
+
   def getGSM (self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,id_tower,power from gsm where req_id in (select max(id_req) from req)")
       rows = cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
-
-a=Postgres()
-print(a.getGSM(1))
 

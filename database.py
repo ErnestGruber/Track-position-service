@@ -23,24 +23,24 @@ class Postgres:
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"SELECT id,latitude,longitude,power  from gps where req_id in (select req_id from gps order by req_id desc Limit 4) and id={id_phone}")
+      cur.execute(f"SELECT id,latitude,longitude,power  from gps where id_req in (select id_req from gps order by id_req desc Limit 4) and id={id_phone}")
       rows = cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 
 
-  def getMac(self,id_phone): # { id:mac }
+  def getMac(self,id): # 'mac'
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,mac from wifi where id_req in (select max(id_req) from req)")
+      cur.execute(f"select id,mac from wifi where id={id}")
       rows=cur.fetchall()
       a=rows[0]
-    return {a[0]:a[1]}
+    return a[1]
 
 
   def getAccelerometr(self,id):  # {id:[x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,x,y,z from accelerometr where req_id in (select max(id_req) from req)")
+      cur.execute(f"select id,x,y,z from (select id,x,y,z from accelerometr order by id_req desc) as foo where id=1 Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 
@@ -48,23 +48,22 @@ class Postgres:
   def getGyroscop(self,id): # {id : [x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,x,y,z from gyroscop where req_id in (select max(id_req) from req)")
+      cur.execute(f"select id,x,y,z from (select id,x,y,z from gyroscop order by id_req desc) as foo where id={id} Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]: [rows[0][1], rows[0][2]]}
 
 
-  def getMeta (self,id): # {id:power}
+  def getMeta (self,id): # return {id:power}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id, volt from Meta where req_id in (select max(id_req) from req)")
+      cur.execute(f"select id,volt from (select id,volt from meta order by id_req desc) as foo where id={id} Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]:rows[0][1]}
 
 
-  def getGSM (self,id):
+  def getGSM (self,id): # return {id:[id_tower,power]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,id_tower,power from gsm where req_id in (select max(id_req) from req)")
+      cur.execute(f"select id,id_tower,power from (select id,id_tower,power from gsm order by id_req desc) as foo where id={id} Limit 1")
       rows = cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
-

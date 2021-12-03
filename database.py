@@ -23,7 +23,7 @@ class Postgres:
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"SELECT id,lat,lon,power  from transfer_gps where id_req in (select id_req from transfer_gps order by id_req desc Limit 10) and id={id_phone}")
+      cur.execute(f"SELECT id,latitude,longitude,power  from transfer_gps where id_req in (select id_req from transfer_gps order by id_req desc Limit 10) and id={id_phone}")
       rows = cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 
@@ -31,7 +31,7 @@ class Postgres:
   def getMac(self,id): # 'mac'
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,mac from transfer_wifi where id={id}")
+      cur.execute(f"select id,mac from wifi where id={id}")
       rows=cur.fetchall()
       a=rows[0]
     return a[1]
@@ -40,7 +40,7 @@ class Postgres:
   def getAccelerometr(self,id):  # {id:[x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,x,y,z from (select id,x,y,z from transfer_accelerometr order by id_req desc) as foo where id={id} Limit 1")
+      cur.execute(f"select id,x,y,z from (select id,x,y,z from accelerometr order by id_req desc) as foo where id={id} Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 
@@ -48,7 +48,7 @@ class Postgres:
   def getGyroscop(self,id): # {id : [x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,x,y,z from (select id,x,y,z from transfer_gyro order by id_req desc) as foo where id={id} Limit 1")
+      cur.execute(f"select id,x,y,z from (select id,x,y,z from gyroscop order by id_req desc) as foo where id={id} Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]: [rows[0][1], rows[0][2]]}
 
@@ -56,7 +56,7 @@ class Postgres:
   def getMeta (self,id): # return {id:power}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,volt from (select id,volt from transfer_meta order by id_req desc) as foo where id={id} Limit 1")
+      cur.execute(f"select id,volt from (select id,volt from meta order by id_req desc) as foo where id={id} Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]:rows[0][1]}
 
@@ -64,8 +64,8 @@ class Postgres:
   def getGSM (self,id): # return {id:[id_tower,power]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,mcc,mnc,cell_id,lac from (select id,mcc,mnc,cell_id,lac,id_req from transfer_gsm order by id_req desc) as foo where id={id} Limit 1")
+      cur.execute(f"select id,id_tower,power from (select id,id_tower,power from gsm order by id_req desc) as foo where id={id} Limit 1")
       rows = cur.fetchall()
-    return rows
+    return {rows[0][0]:[rows[0][1],rows[0][2]]}
 a=Postgres()
-print(a.getGSM(1))
+a.getGPS(1)

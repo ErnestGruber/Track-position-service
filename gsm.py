@@ -1,31 +1,23 @@
 import requests
-from json import loads
-class gsmapi:
+
+class GsmApi:
+
     @staticmethod
     def getcoord(mcc,mnc,cellid,lac):
         response = requests.get(f'https://api.mylnikov.org/mobile/main.py/get?mcc={mcc}&mnc={mnc}&cellid={cellid}&lac={lac}&data=open&v=1.1')
         return response.json()['data']['lat'],response.json()['data']['lon']
 
+class Gsm:
+    def __init__(self,lat1,lon1,lat2,lon2,lat3,lon3,out1,out2,out3):
+        self.x=[lat1,lat2,lat3]
+        self.y = [lon1,lon2,lon3]
+        self.s= [out1+100, out2+100, out3+100]
 
-
-
-
-class gsm:
-    def __init__(self,x1,y1,x2,y2,x3,y3,s1,s2,s3):
-        self.x1=x1
-        self.x2 = x2
-        self.x3 = x3
-        self.y1 = y1
-        self.y2 = y2
-        self.y3 = y3
-        self.s1= s1+100
-        self.s2=s2+100
-        self.s3=s3+100
     def coord(self):
-        w1 = self.s1 / (self.s1 + self.s2 + self.s3)
-        w2 = self.s2 / (self.s1 + self.s2 + self.s3)
-        w3 = self.s3 / (self.s1 + self.s2 + self.s3)
-        x= (w1 * self.x1 + w2 * self.x2 + w3 * self.x3)
-        y= (w1 * self.y1 + w2 * self.y2 + w3 * self.y3)
+        w1 = self.s[0] / (self.s[0] + self.s[1] + self.s[2])
+        w2 = self.s[1] / (self.s[0] + self.s[1] + self.s[2])
+        w3 = self.s[2] / (self.s[0] + self.s[1] + self.s[2])
+        x= (w1 * self.x[0] + w2 * self.x[1] + w3 * self.x[2])
+        y= (w1 * self.y[0] + w2 * self.y[1] + w3 * self.y[2])
         return (x,y)
 

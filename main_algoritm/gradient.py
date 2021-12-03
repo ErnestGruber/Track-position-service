@@ -3,13 +3,14 @@ from math import radians, cos, sin, asin, sqrt, e
 
 # noinspection PyTypeChecker
 class Gradient:
-    def __init__(self, first_coordinat):
+    def __init__(self, first_coordinat,id_phone):
         self.second_coordinat=[]
         self.first_coordinat = first_coordinat
         self.iteration_number = 1
         self.list_S = [1,0]
         self.time =[8, 8]
         self.i=0
+        self.id=id_phone
     def main(self,second_coordinat):
         self.second_coordinat = second_coordinat
         S = self.get_distance()
@@ -26,16 +27,16 @@ class Gradient:
     def get_time(self, S, a):
         if a > 4:
             self.time[self.iteration_number] = self.time[self.iteration_number] *e**(1/3)+2
-           # print(a, " speed ", S, "  ", self.time[self.iteration_number])
-            return self.time[self.iteration_number]
+            print(a, " speed ", S, "  ", self.time[self.iteration_number])
+            return self.time[self.iteration_number], self.id
         if 0 < a < 1:
             self.time[self.iteration_number] = 15
-           # print( a , " stabilno  ", S, "  ", self.time[self.iteration_number])
-            return self.time[self.iteration_number]
+            print( a , " stabilno  ", S, "  ", self.time[self.iteration_number])
+            return self.time[self.iteration_number], self.id
         if a<0:
             self.time[self.iteration_number] = self.time[self.iteration_number] *1/(e**(1/3))+2
-           # print(a, " slow  ", S, "  ", self.time[self.iteration_number])
-            return self.time[self.iteration_number]
+            print(a, " slow  ", S, "  ", self.time[self.iteration_number])
+            return self.time[self.iteration_number], self.id
 
     def get_distance(self):
         R = 6372800
@@ -48,7 +49,7 @@ class Gradient:
         self.first_coordinat = self.second_coordinat
         return R * c
 
-a = Gradient([59.81327946445496, 30.31833866668659])
+a = Gradient([59.81327946445496, 30.31833866668659], 4554545545454545545454)
 a.main([59.87685440549503, 30.290872846374086])
 a.main([59.89824896312824,30.22976139617877])
 a.main([59.9041051265614,30.22289494110071])

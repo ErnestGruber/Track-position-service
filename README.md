@@ -5,6 +5,11 @@
  ### Особенность проекта в следующем:
 
  ### Стек
+ <Python>
+ <Django Rest Framework (nginx, gunicorn)>
+ <postgresql> 
+ <C++>
+ <Android SDK>
 
 ### Демо
 

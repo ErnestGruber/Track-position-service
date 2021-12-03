@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Phone(models.Model):
-    id_phone = models.FloatField()
+    id_phone = models.FloatField() #  уник номер
 
 
 class GPS(models.Model):

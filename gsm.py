@@ -1,10 +1,13 @@
 import requests
+from json import loads
 class gsmapi:
     @staticmethod
     def getcoord(mcc,mnc,cellid,lac):
         response = requests.get(f'https://api.mylnikov.org/mobile/main.py/get?mcc={mcc}&mnc={mnc}&cellid={cellid}&lac={lac}&data=open&v=1.1')
-        print(response.json())
-gsmapi.getcoord('250','02','48181','1671')
+        return response.json()['data']['lat'],response.json()['data']['lon']
+
+
+
 
 
 class gsm:
@@ -15,9 +18,9 @@ class gsm:
         self.y1 = y1
         self.y2 = y2
         self.y3 = y3
-        self.s1= abs(s1)
-        self.s2=abs(s2)
-        self.s3=abs(s3)
+        self.s1= s1+100
+        self.s2=s2+100
+        self.s3=s3+100
     def coord(self):
         w1 = self.s1 / (self.s1 + self.s2 + self.s3)
         w2 = self.s2 / (self.s1 + self.s2 + self.s3)

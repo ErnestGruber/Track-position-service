@@ -23,7 +23,7 @@ class Postgres:
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"SELECT id,latitude,longitude,power  from gps where id_req in (select id_req from gps order by id_req desc Limit 4) and id={id_phone}")
+      cur.execute(f"SELECT id,latitude,longitude,power  from transfer_gps where id_req in (select id_req from transfer_gps order by id_req desc Limit 10) and id={id_phone}")
       rows = cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 
@@ -67,3 +67,5 @@ class Postgres:
       cur.execute(f"select id,id_tower,power from (select id,id_tower,power from gsm order by id_req desc) as foo where id={id} Limit 1")
       rows = cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
+a=Postgres()
+a.getGPS(1)

@@ -4,3 +4,5 @@
 
 #Database
 *.sqlite3
+
+/.idea/

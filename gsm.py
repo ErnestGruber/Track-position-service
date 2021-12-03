@@ -25,6 +25,4 @@ class gsm:
         x= (w1 * self.x1 + w2 * self.x2 + w3 * self.x3)
         y= (w1 * self.y1 + w2 * self.y2 + w3 * self.y3)
         return (x,y)
-a=gsm(48.2248439,14.2565389,48.2331576,14.2637736,48.232513,14.2488163,80,55,55)
-print(a.coord())
 

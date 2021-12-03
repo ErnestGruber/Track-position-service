@@ -1,6 +1,5 @@
 from main_algoritm.gradient import Gradient
 
-
 def alg_methods(id, first_coord):
     send_data=Gradient(first_coord, id)
     signal=get_signal_GPS(id) #   надо два значени яхороший или не хороший

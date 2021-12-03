@@ -40,7 +40,7 @@ class Postgres:
   def getAccelerometr(self,id):  # {id:[x,y,z]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,x,y,z from (select id,x,y,z from accelerometr order by id_req desc) as foo where id=1 Limit 1")
+      cur.execute(f"select id,x,y,z from (select id,x,y,z from accelerometr order by id_req desc) as foo where id={id} Limit 1")
       rows=cur.fetchall()
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 

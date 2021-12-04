@@ -1,7 +1,6 @@
 import time
-
 from main_algoritm.gradient import Gradient
-import requests.exceptions
+
 def alg_methods(id, first_coord):
     send_data=Gradient(first_coord, id)
     sqlData=Postgres()

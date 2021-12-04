@@ -1,6 +1,4 @@
 from math import radians, cos, sin, asin, sqrt, e
-
-
 # noinspection PyTypeChecker
 class Gradient:
     def __init__(self, first_coordinat,id_phone):

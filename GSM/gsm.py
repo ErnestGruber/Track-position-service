@@ -6,7 +6,7 @@ class GsmApi:
     @staticmethod
     def getcoord(data):
         response = requests.get(
-            f'https://api.mylnikov.org/mobile/main.py/get?mcc={data[0]}&mnc={data[1]}&cellid={data[2]}&lac={lac[3]}&data=open&v=1.1')
+            f'https://api.mylnikov.org/mobile/main.py/get?mcc={data[0]}&mnc={data[1]}&cellid={data[2]}&lac={data[3]}&data=open&v=1.1')
         return response.json()['data']['lat'], response.json()['data']['lon']
 
 

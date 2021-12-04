@@ -1,10 +1,11 @@
 import math
 
-def simplify_points (pts, tolerance):
-    anchor  = 0
+
+def simplify_points(pts, tolerance):
+    anchor = 0
     floater = len(pts) - 1
-    stack   = []
-    keep    = set()
+    stack = []
+    keep = set()
 
     stack.append((anchor, floater))
     while stack:
@@ -29,7 +30,7 @@ def simplify_points (pts, tolerance):
             # compare to anchor
             vecX = float(pts[i][0] - pts[anchor][0])
             vecY = float(pts[i][1] - pts[anchor][1])
-            seg_len = math.sqrt( vecX ** 2 + vecY ** 2 )
+            seg_len = math.sqrt(vecX ** 2 + vecY ** 2)
             # dot product:
             proj = vecX * anchorX + vecY * anchorY
             if proj < 0.0:
@@ -38,7 +39,7 @@ def simplify_points (pts, tolerance):
                 # compare to floater
                 vecX = float(pts[i][0] - pts[floater][0])
                 vecY = float(pts[i][1] - pts[floater][1])
-                seg_len = math.sqrt( vecX ** 2 + vecY ** 2 )
+                seg_len = math.sqrt(vecX ** 2 + vecY ** 2)
                 # dot product:
                 proj = vecX * (-anchorX) + vecY * (-anchorY)
                 if proj < 0.0:
@@ -49,7 +50,7 @@ def simplify_points (pts, tolerance):
                     max_dist = dist_to_seg
                     farthest = i
 
-        if max_dist <= tolerance: # использование отрезка
+        if max_dist <= tolerance:  # использование отрезка
             keep.add(anchor)
             keep.add(floater)
         else:
@@ -59,6 +60,3 @@ def simplify_points (pts, tolerance):
     keep = list(keep)
     keep.sort()
     return [pts[i] for i in keep]
-
-
-

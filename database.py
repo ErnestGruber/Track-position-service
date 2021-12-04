@@ -19,19 +19,19 @@ class DataConn:
 
 class Postgres:
 
-  def getGPS(self,id_phone): # {id :[latitude,logitude,power]}
+  def getpoweroneGS(self,id_phone): # {id :[latitude,logitude,power]}
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"SELECT id,lat,lon,power  from transfer_gps where id_req in (select id_req from transfer_gps order by id_req desc Limit 10) and id={id_phone}")
+      cur.execute(f"SELECT id,power  from transfer_gps where id in (select max(id) from transfer_gps)")
       rows = cur.fetchall()
-    return {rows[0][0]:[rows[0][1],rows[0][2]]}
+    return rows[0][1]
 
 
   def getMac(self,id): # 'mac'
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,mac from transfer_wifi where id={id}")
+      cur.execute(f"select id,mac from transfer_wifi where id in (select max(id) from transfer_wifi)")
       rows=cur.fetchall()
       a=rows[0]
     return a[1]
@@ -64,8 +64,49 @@ class Postgres:
   def getGSM (self,id): # return {id:[id_tower,power]}
     with DataConn() as con:
       cur = con.cursor()
-      cur.execute(f"select id,mcc,mnc,cell_id,lac from (select id,mcc,mnc,cell_id,lac  from transfer_gsm order by id_req desc) as foo where id={id} Limit 1")
+      cur.execute(f"select mcc,mnc,cell_id,lac from transfer_gsm where id in (select max(id)  from transfer_gsm ) ")
+      rows = cur.fetchall()
+      a=rows[0]
+      b=[];b.append(a[0]);b.append(a[1]);b.append(a[2]);b.append(a[3])
+    return b
+
+  def getoneGPS(self,id_phone): # {id :[latitude,logitude,power]}
+    self.id_phone=id_phone
+    with DataConn() as con:
+      cur = con.cursor()
+      cur.execute(f"SELECT lat,lon  from transfer_gps where id in (select max(id) from transfer_gps )")
+      rows = cur.fetchall()
+      a=[]
+      a.append(rows[0][0]); a.append(rows[0][1])
+    return a
+
+
+
+  def getmanyGPS(self,id_phone): # {id :[latitude,logitude,power]}
+    self.id_phone=id_phone
+    with DataConn() as con:
+      cur = con.cursor()
+      cur.execute(f"SELECT lat,lon  from transfer_gps")
       rows = cur.fetchall()
     return rows
-a=Postgres()
-print(a.getGSM(1))
+
+
+
+  def getpowerwifi(self,id): # 'mac'
+    with DataConn() as con:
+      cur = con.cursor()
+      cur.execute(f"select power from transfer_wifi where id in (select max(id) from transfer_wifi)")
+      rows=cur.fetchall()
+      a=rows[0]
+    return a[0]
+
+
+  def getGSM (self,id): # return {id:[id_tower,power]}
+    with DataConn() as con:
+      cur = con.cursor()
+      cur.execute(f"select mcc,mnc,cell_id,lac"
+                  f" from (select id, mcc,mnc,cell_id,lac  from transfer_gsm order by id_req desc) as foo where id={id} Limit 1")
+      rows = cur.fetchall()
+      a=rows[0]
+      b=[];b.append(a[0]);b.append(a[1]);b.append(a[2]);b.append(a[3])
+    return b

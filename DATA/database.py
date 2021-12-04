@@ -110,3 +110,18 @@ class Postgres:
       a=rows[0]
       b=[];b.append(a[0]);b.append(a[1]);b.append(a[2]);b.append(a[3])
     return b
+
+  def insertgps (self,a):
+    x=a[0]
+    y=a[1]
+    with DataConn() as con:
+      cur = con.cursor()
+      cur.execute(f"update transfer_gps set lat={x},lon={y} where id in (select id from transfer_gps order by id desc Limit 1) ")
+
+  def gsmpower (id):
+    cur=con.cursor()
+    cur.execute(f"select power from transfer_gsm order by id desc limit 3 ")
+    rows=cur.fetchall()
+    a=rows[0]
+    b=[]; b.append(a[0],a[1],a[2])
+    return b

@@ -1,2 +1,0 @@
-# BeelaneKinbery
-конкурсная работа 

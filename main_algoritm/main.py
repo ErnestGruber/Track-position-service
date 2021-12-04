@@ -11,7 +11,7 @@ def alg_methods(id, first_coord):
         t=send_data.main(coordinat_GPS)
         time.sleep(t)
                                 # отправить данные T
-        simplify_points(,0.01)#то что ты показывал НО ИЗ БАЗЫ ДАННЫХ
+        simplify_points(getGSM(id),0.01)#то что ты показывал НО ИЗ БАЗЫ ДАННЫХ
     ##    coord_truth=get_average(id) #среднее верно  или нет то что хотел даня
     while signal<=25:
         if sqlData.getpowerwifi(id) >10:

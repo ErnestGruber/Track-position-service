@@ -19,7 +19,7 @@ class DataConn:
 
 class Postgres:
 
-  def getpoweroneGS(self,id_phone): # {id :[latitude,logitude,power]}
+  def getpoweroneGS(self,id_phone):
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
@@ -28,7 +28,7 @@ class Postgres:
     return rows[0][1]
 
 
-  def getMac(self,id): # 'mac'
+  def getMac(self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,mac from transfer_wifi where id in (select max(id) from transfer_wifi)")
@@ -37,7 +37,7 @@ class Postgres:
     return a[1]
 
 
-  def getAccelerometr(self,id):  # {id:[x,y,z]}
+  def getAccelerometr(self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,x,y,z from (select id,x,y,z from transfer_accelerometr order by id_req desc) as foo where id={id} Limit 1")
@@ -45,7 +45,7 @@ class Postgres:
     return {rows[0][0]:[rows[0][1],rows[0][2]]}
 
 
-  def getGyroscop(self,id): # {id : [x,y,z]}
+  def getGyroscop(self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,x,y,z from (select id,x,y,z from transfer_gyro order by id_req desc) as foo where id={id} Limit 1")
@@ -53,7 +53,7 @@ class Postgres:
     return {rows[0][0]: [rows[0][1], rows[0][2]]}
 
 
-  def getMeta (self,id): # return {id:power}
+  def getMeta (self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select id,volt from (select id,volt from transfer_meta order by id_req desc) as foo where id={id} Limit 1")
@@ -61,7 +61,7 @@ class Postgres:
     return {rows[0][0]:rows[0][1]}
 
 
-  def getGSM (self,id): # return {id:[id_tower,power]}
+  def getGSM (self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select mcc,mnc,cell_id,lac from transfer_gsm where id in (select max(id)  from transfer_gsm ) ")
@@ -70,7 +70,7 @@ class Postgres:
       b=[];b.append(a[0]);b.append(a[1]);b.append(a[2]);b.append(a[3])
     return b
 
-  def getoneGPS(self,id_phone): # {id :[latitude,logitude,power]}
+  def getoneGPS(self,id_phone):
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
@@ -82,7 +82,7 @@ class Postgres:
 
 
 
-  def getmanyGPS(self,id_phone): # {id :[latitude,logitude,power]}
+  def getmanyGPS(self,id_phone):
     self.id_phone=id_phone
     with DataConn() as con:
       cur = con.cursor()
@@ -92,7 +92,7 @@ class Postgres:
 
 
 
-  def getpowerwifi(self,id): # 'mac'
+  def getpowerwifi(self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select power from transfer_wifi where id in (select max(id) from transfer_wifi)")
@@ -101,7 +101,7 @@ class Postgres:
     return a[0]
 
 
-  def getGSM (self,id): # return {id:[id_tower,power]}
+  def getGSM (self,id):
     with DataConn() as con:
       cur = con.cursor()
       cur.execute(f"select mcc,mnc,cell_id,lac"

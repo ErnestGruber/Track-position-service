@@ -16,8 +16,7 @@
 * Android SDK
 
 ### Демо
-Приложение на Android для отслеживания гепозиции - https://disk.yandex.ru/d/1l9QUrtA88_cbQ 
-                                          GitHub - https://github.com/ErnestGruber/GPSApp
+Приложение на Android для отслеживания гепозиции - https://disk.yandex.ru/d/1l9QUrtA88_cbQ GitHub - https://github.com/ErnestGruber/GPSApp
 
 Скринкаст - работа приложения - https://disk.yandex.ru/i/4vi5mYbaR2ea9w
 

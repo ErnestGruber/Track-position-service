@@ -1,20 +1,18 @@
 import requests
-
-
 class GsmApi:
 
     @staticmethod
-    def getcoord(data):
+    def getcoord(mcc,mnc,lac,cellid):
         response = requests.get(
-            f'https://api.mylnikov.org/mobile/main.py/get?mcc={data[0]}&mnc={data[1]}&cellid={data[2]}&lac={lac[3]}&data=open&v=1.1')
+            f'https://api.mylnikov.org/geolocation/cell?v=1.1&data=open&mcc={mcc}&mnc={mnc}&lac={lac}&cellid={cellid}')
         return response.json()['data']['lat'], response.json()['data']['lon']
 
 
 class Gsm:
-    def __init__(self, lat1, lon1, lat2, lon2, lat3, lon3, out1, out2, out3):
-        self.x = [lat1, lat2, lat3]
-        self.y = [lon1, lon2, lon3]
-        self.s = [out1 + 100, out2 + 100, out3 + 100]
+    def __init__(self, x, y, out):
+        self.x = x
+        self.y = y
+        self.s = [x+100 for x in out]
 
     def coord(self):
         w1 = self.s[0] / (self.s[0] + self.s[1] + self.s[2])
@@ -23,3 +21,4 @@ class Gsm:
         x = (w1 * self.x[0] + w2 * self.x[1] + w3 * self.x[2])
         y = (w1 * self.y[0] + w2 * self.y[1] + w3 * self.y[2])
         return (x, y)
+
